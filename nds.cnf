@@ -1,0 +1,11 @@
+[dir]
+storageDir = storage
+
+[db]
+dbHost = d.jovistar.info
+dbUser = root
+dbPass = mysqlpw
+dbName = ndroidas
+
+[com]
+comPort = 12321
