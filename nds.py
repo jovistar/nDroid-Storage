@@ -12,7 +12,7 @@ from twisted.internet import reactor
 def nds_loop():
 	ndutil.setTimezone()
 
-	logger = Logger(12322)
+	logger = Logger('nDroid-Storage', '127.0.0.1', 12322)
 	logger.logger('Initiating')
 
 	logger.logger('Loading Config')
