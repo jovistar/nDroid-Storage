@@ -27,32 +27,32 @@ class DbManager():
 	def getId(self, uid):
 		count = self.dbCursor.execute('select sid from storage where uid=%s', uid)
 		if count:
-			sid = dbCursor.fetchone()
-			return sid
+			sid = self.dbCursor.fetchone()
+			return sid[0]
 		else:
 			return None
 
 	def getPath(self, uid):
 		count = self.dbCursor.execute('select path from storage where uid=%s', uid)
 		if count:
-			path = dbCursor.fetchone()
-			return path
+			path = self.dbCursor.fetchone()
+			return path[0]
 		else:
 			return None
 
 	def getSize(self, uid):
 		count = self.dbCursor.execute('select size from storage where uid=%s', uid)
 		if count:
-			size = int(dbCursor.fetchone())
-			return size
+			size = int(self.dbCursor.fetchone())
+			return size[0]
 		else:
 			return None
 
 	def getCreated(self):
 		count = self.dbCursor.execute('select created from storage where uid=%s', uid)
 		if count:
-			created = dbCursor.fetchone()
-			return created
+			created = self.dbCursor.fetchone()
+			return created[0]
 		else:
 			return None
 
