@@ -3,7 +3,7 @@
 from cnfmanager import CnfManager
 from dbmanager import DbManager
 from msgmanager import MsgManager
-from logger import Logger
+from ndlcom import NdlCom
 from netmanager import NetManager
 import ndutil
 
@@ -12,29 +12,29 @@ from twisted.internet import reactor
 def nds_loop():
 	ndutil.setTimezone()
 
-	logger = Logger('nDroid-Storage', '127.0.0.1', 12322)
-	logger.logger('Initiating')
+	ndlCom = NdlCom('nDroid-Storage', '127.0.0.1', 12322)
+	ndlCom.doCom('Initiating')
 
-	logger.logger('Loading Config')
+	ndlCom.doCom('Loading Config')
 	cnfManager = CnfManager()
 	cnfManager.load('./nds.cnf')
 	cnfData = cnfManager.getCnfData()
 
 	ndutil.enableDir(cnfData['storageDir'])
 
-	logger.logger('Connecting to DB')
+	ndlCom.doCom('Connecting to DB')
 	dbManager = DbManager(cnfData['dbHost'], cnfData['dbUser'], cnfData['dbPass'], cnfData['dbName'])
 
 	msgManager = MsgManager()
 
 	netManager = NetManager()
 	netManager.setStorageDir(cnfData['storageDir'])
-	netManager.setLogger(logger)
+	netManager.setNdlCom(ndlCom)
 	netManager.setDbManager(dbManager)
 	netManager.setMsgManager(msgManager)
 
 	reactor.listenUDP(cnfData['comPort'], netManager)
-	logger.logger('Listening Com Port')
+	ndlCom.doCom('Listening Com Port')
 	reactor.run()
 
 

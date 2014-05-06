@@ -6,7 +6,7 @@ import os
 import threading
 import socket
 
-class Logger():
+class NdlCom():
 	def __init__(self, name, host, port):
 		self.name = name
 		self.address = (host, port)
@@ -16,7 +16,7 @@ class Logger():
 		self.lock = threading.Lock()
 
 
-	def logger(self, msg):
+	def doCom(self, msg):
 		self.lock.acquire()
 
 		finalMsg = '%s : %s' % (self.name, msg)

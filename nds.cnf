@@ -2,7 +2,7 @@
 storageDir = storage
 
 [db]
-dbHost = d.jovistar.info
+dbHost = 127.0.0.1
 dbUser = root
 dbPass = mysqlpw
 dbName = ndroidas

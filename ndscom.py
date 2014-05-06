@@ -23,7 +23,6 @@ class NdsCom():
 		else:
 			return 0, result['uid']
 
-
 	def delete(self, uid):
 		data = {}
 		data['request'] = 'delete'

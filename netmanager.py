@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from twisted.internet.protocol import DatagramProtocol
-from logger import Logger
+from ndlcom import NdlCom
 from dbmanager import DbManager
 from msgmanager import MsgManager
 import ndutil
@@ -9,8 +9,8 @@ import os
 import shutil
 
 class NetManager(DatagramProtocol):
-	def setLogger(self, logger):
-		self.logger = logger
+	def setLogger(self, ndlCom):
+		self.ndlCom = ndlCom
 
 	def setStorageDir(self, storageDir):
 		self.storageDir = storageDir
@@ -22,17 +22,17 @@ class NetManager(DatagramProtocol):
 		self.dbManager = dbManager
 
 	def datagramReceived(self, data, (host, port)):
-		self.logger.logger('Request from %s:%d' % (host, port))
+		self.ndlCom.doCom('Request from %s:%d' % (host, port))
 		self.dispatch(data, host, port)
 
 	def dispatch(self, data, host, port):
 		retCode, result = self.msgManager.resRequest(data)
 		if retCode != 0:
-			self.logger.logger('Error Request')
+			self.ndlCom.doCom('Error Request')
 		else:
 			responseData = {}
 			if result['request'] == 'create':
-				self.logger.logger('Request: CREATE')
+				self.ndlCom.doCom('Request: CREATE')
 				if not os.path.isfile(result['path']):
 					responseData['response'] = 1
 				else:
@@ -55,7 +55,7 @@ class NetManager(DatagramProtocol):
 						responseData['uid'] = uid
 				
 			if result['request'] == 'delete':
-				self.logger.logger('Request: DELETE')
+				self.ndlCom.doCom('Request: DELETE')
 				if not self.dbManager.exists(result['uid']):
 					responseData['response'] = 1
 				else:
@@ -65,7 +65,7 @@ class NetManager(DatagramProtocol):
 					os.remove(path)
 
 			if result['request'] == 'get':
-				self.logger.logger('Request: GET')
+				self.ndlCom.doCom('Request: GET')
 				if not self.dbManager.exists(result['uid']):
 					responseData['response'] = 1
 				else:
