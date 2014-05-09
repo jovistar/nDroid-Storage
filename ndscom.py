@@ -54,25 +54,32 @@ class NdsCom():
 			return 1, 0
 		return 0, result['item_count']
 
-	def get_uids(self, maxNum):
+	def get_uids(self, start, num):
 		data = {}
-		data['request'] = 'get_items'
-		data['maxNum'] = maxNum
+		data['request'] = 'get_uids'
+		if start < 0:
+			start = 0
+		if num < 0:
+			retCode, itemCount = self.get_item_count()
+			if retCode == 1:
+				yield 1, []
+			num = itemCount
 		
-		result = self.doCom(data)
-		if result['response'] != 0:
-			return 1, {}
-		return 0, result['
+		while num != 0:
+			data['start'] = start
+			if num > 25:
+				data['num'] = 25
+			else:
+				data['num'] = num
 
-	def get_state(self, uid):
-		data = {}
-		data['request'] = 'get_state'
-		data['uid'] = uid
-
-		result = self.doCom(data)
-		if result['response'] != 0:
-			return 1, ''
-		return 0, result['state']
+			result = self.doCom(data)
+			if result['response'] != 0:
+				yield 1, []
+			else:
+				yield 0, result['uids']
+			
+			start = start + data['num']
+			num = num - data['num']
 
 	def get_path(self, uid):
 		data = {}
@@ -103,17 +110,6 @@ class NdsCom():
 		if result['response'] != 0:
 			return 1, ''
 		return 0, result['create_time']
-
-	def update_state(self, uid, state):
-		data = {}
-		data['request'] = 'update_state'
-		data['uid'] = uid
-		data['state'] = state
-
-		result = self.doCom(data)
-		if result['response'] != 0:
-			return 1
-		return 0
 
 	def doCom(self, data):
 		msg = json.dumps(data)
