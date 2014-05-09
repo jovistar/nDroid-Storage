@@ -13,6 +13,10 @@ class CnfManager():
 
 		self.cnfData = {}
 		self.cnfData['storageDir'] = cf.get('dir', 'storageDir')
+		if cf.get('set', 'fileMode') == 'move':
+			self.cnfData['fileMode'] = 'move'
+		else:
+			self.cnfData['fileMode'] = 'copy'
 		self.cnfData['dbHost'] = cf.get('db', 'dbHost')
 		self.cnfData['dbUser'] = cf.get('db', 'dbUser')
 		self.cnfData['dbPass'] = cf.get('db', 'dbPass')

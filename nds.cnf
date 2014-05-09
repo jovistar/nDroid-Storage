@@ -1,6 +1,9 @@
 [dir]
 storageDir = storage
 
+[set]
+fileMode = copy
+
 [db]
 dbHost = 127.0.0.1
 dbUser = root

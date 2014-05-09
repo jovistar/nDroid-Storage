@@ -15,6 +15,9 @@ class NetManager(DatagramProtocol):
 	def setStorageDir(self, storageDir):
 		self.storageDir = storageDir
 
+	def setFileMode(self, fileMode):
+		self.fileMode = fileMode
+
 	def setMsgManager(self, msgManager):
 		self.msgManager = msgManager
 
@@ -58,7 +61,8 @@ class NetManager(DatagramProtocol):
 			uid = ndutil.getUid(path)
 			if self.dbManager.exists(uid):
 				responseData['uid'] = uid
-				os.remove(path)
+				if self.fileMode == 'move':
+					os.remove(path)
 			else:
 				size = ndutil.getSize(path) / 1024
 				createTime = ndutil.getCreated()
@@ -66,7 +70,10 @@ class NetManager(DatagramProtocol):
 				fileExt = os.path.basename(path).split('.', 1)
 				dirPath = self.enable_storage_dir(self.storageDir, uid)
 				newPath = '%s/%s.%s' % (dirPath, uid, fileExt[1])
-				shutil.copyfile(path, newPath)
+				if self.fileMode == 'move':
+					shutil.move(path, newPath)
+				elif self.fileMode == 'copy':
+					shutil.copyfile(path, newPath)
 				path = ndutil.getAbstractPath(newPath)
 
 				self.dbManager.create_item(uid, path, createTime, size)

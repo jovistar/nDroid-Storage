@@ -35,6 +35,7 @@ def nds_loop(doInit):
 
 	netManager = NetManager()
 	netManager.setStorageDir(cnfData['storageDir'])
+	netManager.setFileMode(cnfData['fileMode'])
 	netManager.setNdlCom(ndlCom)
 	netManager.setDbManager(dbManager)
 	netManager.setMsgManager(msgManager)
