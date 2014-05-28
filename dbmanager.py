@@ -46,7 +46,10 @@ class DbManager():
 
 	def get_item_count(self):
 		count = self.dbCursor.execute('select count(sid) from storage')
-		return count
+		if count:
+			result = self.dbCursor.fetchone()
+			return int(result[0])
+		return 0
 
 	def get_uids(self, start, num):
 		if start < 0:

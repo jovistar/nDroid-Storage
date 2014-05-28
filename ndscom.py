@@ -17,7 +17,7 @@ class NdsCom():
 			return 1, ''
 		data['path'] = os.path.abspath(path)
 
-		result = self.doCom(data)
+		result = self.do_com(data)
 		if result['response'] != 0:
 			return 1, ''
 		else:
@@ -28,7 +28,7 @@ class NdsCom():
 		data['request'] = 'delete_item'
 		data['uid'] = uid
 
-		result = self.doCom(data)
+		result = self.do_com(data)
 		if result['response'] != 0:
 			return 1
 		else:
@@ -39,7 +39,7 @@ class NdsCom():
 		data['request'] = 'get_item'
 		data['uid'] = uid
 
-		result = self.doCom(data)
+		result = self.do_com(data)
 		if result['response'] != 0:
 			return 1, {}
 		else:
@@ -49,7 +49,7 @@ class NdsCom():
 		data = {}
 		data['request'] = 'get_item_count'
 
-		result = self.doCom(data)
+		result = self.do_com(data)
 		if result['response'] != 0:
 			return 1, 0
 		return 0, result['item_count']
@@ -72,7 +72,7 @@ class NdsCom():
 			else:
 				data['num'] = num
 
-			result = self.doCom(data)
+			result = self.do_com(data)
 			if result['response'] != 0:
 				yield 1, []
 			else:
@@ -86,7 +86,7 @@ class NdsCom():
 		data['request'] = 'get_path'
 		data['uid'] = uid
 
-		result = self.doCom(data)
+		result = self.do_com(data)
 		if result['response'] != 0:
 			return 1, ''
 		return 0, result['path']
@@ -96,7 +96,7 @@ class NdsCom():
 		data['request'] = 'get_size'
 		data['uid'] = uid
 
-		result = self.doCom(data)
+		result = self.do_com(data)
 		if result['response'] != 0:
 			return 1, 0
 		return 0, result['size']
@@ -106,12 +106,12 @@ class NdsCom():
 		data['request'] = 'get_create_time'
 		data['uid'] = uid
 
-		result = self.doCom(data)
+		result = self.do_com(data)
 		if result['response'] != 0:
 			return 1, ''
 		return 0, result['create_time']
 
-	def doCom(self, data):
+	def do_com(self, data):
 		msg = json.dumps(data)
 		self.s.sendto(msg, self.address)
 		result,addr = self.s.recvfrom(40960)
